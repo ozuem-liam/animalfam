@@ -13,56 +13,40 @@ cloudinary.config({
 
 export async function POST(request: NextRequest) {
   try {
-    // Authenticate user
     const session = await getServerSession(authOptions);
     if (!session || (session.user.role !== 'ADMIN' && session.user.email !== 'dikandumichael@gmail.com')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const formData = await request.formData();
-    const file = formData.get('file') as File;
+    const files = formData.getAll('files') as File[];
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    if (!files.length) {
+      return NextResponse.json({ error: 'No files provided' }, { status: 400 });
     }
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.' },
-        { status: 400 }
+    const uploadedImages = [];
+
+    for (const file of files) {
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) continue;
+      if (file.size > 5 * 1024 * 1024) continue;
+
+      const fileBuffer = Buffer.from(await file.arrayBuffer());
+      const result = await cloudinary.uploader.upload(
+        `data:${file.type};base64,${fileBuffer.toString('base64')}`,
+        { upload_preset: 'ml_default' }
       );
+
+      uploadedImages.push({ url: result.secure_url, publicId: result.public_id });
     }
-
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 });
-    }
-
-    const fileBuffer = Buffer.from(await file.arrayBuffer());
-    const publicId = `product_${uuidv4()}`;
-
-    const result = await cloudinary.uploader.upload(
-      `data:${file.type};base64,${fileBuffer.toString("base64")}`,
-      {
-        upload_preset: "ml_default",
-      }
-    );
-      
-    const uploadResult = result as { secure_url: string; public_id: string };
 
     return NextResponse.json({
       success: true,
-      imageUrl: uploadResult.secure_url,
-      publicId: uploadResult.public_id,
-      message: 'Image uploaded successfully',
+      images: uploadedImages,
     });
   } catch (error: any) {
-    console.error('Error uploading image:', JSON.stringify(error, null, 2));
-    const errorMessage = error.message || 'Failed to upload image';
-    const status = error.http_code || 500;
-    return NextResponse.json({ error: errorMessage }, { status });
+    console.error('Error uploading image:', error);
+    return NextResponse.json({ error: error.message || 'Upload failed' }, { status: 500 });
   }
 }
+

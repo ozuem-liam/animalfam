@@ -35,7 +35,7 @@ export function UserMenu() {
         <Button variant="ghost" asChild>
           <Link href="/auth/signin">Sign in</Link>
         </Button>
-        <Button asChild>
+        <Button className="hidden md:inline-flex" asChild>
           <Link href="/auth/signup">Sign up</Link>
         </Button>
       </div>

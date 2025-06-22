@@ -29,7 +29,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       description,
       price,
       originalPrice,
-      image,
+      images,
       categoryId,
       tags,
       featured,
@@ -46,7 +46,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         description,
         price: Math.round(price * 100), // Convert to kobo
         originalPrice: Math.round(originalPrice * 100), // Convert to kobo
-        image,
+        images,
         categoryId,
         tags: tags || [],
         featured: featured || false,

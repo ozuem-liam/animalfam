@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       description,
       price,
       originalPrice,
-      image,
+      images,
       categoryId,
       tags,
       featured,
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
         description,
         price: Math.round(price * 100), // Convert to kobo
         originalPrice: Math.round(originalPrice * 100), // Convert to kobo
-        image,
+        images,
         categoryId,
         tags: tags || [],
         featured: featured || false,

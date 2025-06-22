@@ -47,7 +47,7 @@ interface Product {
   description: string
   price: number
   originalPrice: number
-  image: string
+  images: string[]
   rating: number
   reviews: number
   badge?: string
@@ -76,6 +76,17 @@ interface FilterState {
   inStockOnly: boolean
   organicOnly: boolean
 }
+interface MiniImageSliderProps {
+  images: string[];
+  name: string;
+  width?: number;
+  height?: number;
+  className?: string;
+}
+type ProductImageSliderProps = {
+  images: string[];
+  name: string;
+};
 
 interface Category {
   id: string
@@ -379,6 +390,196 @@ export default function FoodEcommerce() {
       organicOnly: false,
     })
   }
+  function MiniImageSlider({
+    images = [],
+    name,
+    width = 200,
+    height = 150,
+  }: {
+    images: string[];
+    name: string;
+    width?: number;
+    height?: number;
+  }) {
+    const [index, setIndex] = useState(0);
+  
+    if (!images.length) {
+      return (
+        <Image
+          src="/placeholder.svg"
+          alt="Placeholder"
+          width={width}
+          height={height}
+          className="w-full h-32 object-cover rounded-lg mb-3"
+        />
+      );
+    }
+  
+    const next = () => setIndex((i) => (i + 1) % images.length);
+    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+  
+    return (
+      <div className="relative w-full h-32 group overflow-hidden">
+        <Image
+          src={images[index]}
+          alt={`${name} image ${index + 1}`}
+          width={width}
+          height={height}
+          className="w-full h-32 object-cover rounded-lg mb-3 transition-transform duration-300 group-hover:scale-105"
+        />
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white px-1 text-xs rounded"
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white px-1 text-xs rounded"
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
+    );
+  }
+  function ImageSlider({ images = [], alt }: { images: string[], alt: string }) {
+    const [index, setIndex] = useState(0);
+  
+    if (images.length === 0) {
+      return (
+        <img
+          src="/placeholder.svg"
+          alt="placeholder"
+          className="w-20 h-20 object-cover rounded-lg"
+        />
+      );
+    }
+  
+    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+    const next = () => setIndex((i) => (i + 1) % images.length);
+  
+    return (
+      <div className="relative w-20 h-20">
+        <img
+          src={images[index]}
+          alt={`${alt}-${index}`}
+          className="w-20 h-20 object-cover rounded-lg"
+        />
+        <button
+          onClick={prev}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/60 text-white text-xs px-1 rounded-l"
+        >
+          ‹
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/60 text-white text-xs px-1 rounded-r"
+        >
+          ›
+        </button>
+      </div>
+    );
+  }
+
+  
+function MiniImagesSlider({
+  images,
+  name,
+  width = 60,
+  height = 60,
+  className = "rounded-lg object-cover",
+}: MiniImageSliderProps) {
+  const [index, setIndex] = useState(0);
+
+  if (!images || images.length === 0) {
+    return (
+      <Image
+        src="/placeholder.svg"
+        alt="Placeholder"
+        width={width}
+        height={height}
+        className={className}
+      />
+    );
+  }
+
+  const next = () => setIndex((i) => (i + 1) % images.length);
+  const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+
+  return (
+    <div className="relative group w-fit h-fit">
+      <Image
+        src={images[index]}
+        alt={`${name} image ${index + 1}`}
+        width={width}
+        height={height}
+        className={className}
+      />
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white text-xs px-1 rounded-l opacity-80 hover:opacity-100"
+          >
+            ‹
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white text-xs px-1 rounded-r opacity-80 hover:opacity-100"
+          >
+            ›
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+function ProductImageSlider({ images = [], name }: ProductImageSliderProps) {
+  const [index, setIndex] = useState(0);
+  
+    if (!images.length) {
+      return (
+        <Image
+          src="/placeholder.svg"
+          alt="Placeholder"
+          width={300}
+          height={250}
+          className="w-full h-64 object-cover"
+        />
+      );
+    }
+  
+    const next = () => setIndex((i) => (i + 1) % images.length);
+    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+  
+    return (
+      <div className="relative w-full h-64 group overflow-hidden">
+        <Image
+          src={images[index]}
+          alt={`${name} image ${index + 1}`}
+          width={300}
+          height={250}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <button
+          onClick={prev}
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded"
+        >
+          ‹
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded"
+        >
+          ›
+        </button>
+      </div>
+    );
+  }
 
   const ProductCard = ({ product, showSimilar = false }: { product: Product; showSimilar?: boolean }) => {
     const [showSimilarProducts, setShowSimilarProducts] = useState(false)
@@ -388,13 +589,7 @@ export default function FoodEcommerce() {
       <Card className="group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white border-0 shadow-lg overflow-hidden">
         <CardContent className="p-0">
           <div className="relative overflow-hidden">
-            <Image
-              src={product.image || "/placeholder.svg"}
-              alt={product.name}
-              width={300}
-              height={250}
-              className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-            />
+          <ProductImageSlider images={product.images} name={product.name} />
             <Badge className="absolute top-3 left-3 bg-emerald-600 hover:bg-emerald-700">{product.badge}</Badge>
             {product.featured && (
               <Badge className="absolute top-3 right-12 bg-yellow-500 text-black">
@@ -488,13 +683,10 @@ export default function FoodEcommerce() {
               {similarProducts.map((similarProduct) => (
                 <Card key={similarProduct.id} className="hover:shadow-lg transition-shadow">
                   <CardContent className="p-4">
-                    <Image
-                      src={similarProduct.image || "/placeholder.svg"}
-                      alt={similarProduct.name}
-                      width={200}
-                      height={150}
-                      className="w-full h-32 object-cover rounded-lg mb-3"
-                    />
+                  <MiniImageSlider
+                    images={similarProduct.images || []}
+                    name={similarProduct.name}
+                  />
                     <h4 className="font-semibold text-sm mb-2">{similarProduct.name}</h4>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-lg font-bold text-emerald-600">{formatPrice(similarProduct.price)}</span>
@@ -696,32 +888,32 @@ const FilterSidebar = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-gradient-to-r from-emerald-800 to-emerald-700 text-white py-2 px-4 animate-in slide-in-from-top duration-500">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 hover:text-yellow-300 transition-colors">
-              <Phone className="h-4 w-4" />
-              <span>+234 8012 345 6789</span>
-            </div>
-            <div className="flex items-center gap-2 hover:text-yellow-300 transition-colors">
-              <Mail className="h-4 w-4" />
-              <span>hello@freshfarm.com</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
-              Free delivery on orders over {formatPrice(2500000)}!
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe className="h-4 w-4" />
-              <select className="bg-transparent border-none text-white cursor-pointer">
-                <option>English</option>
-                <option>Hausa</option>
-                <option>Yoruba</option>
-                <option>Igbo</option>
-              </select>
-            </div>
-          </div>
-        </div>
+      <div className="hidden sm:flex max-w-7xl mx-auto justify-between items-center text-sm px-4 py-3">
+  <div className="flex items-center gap-6">
+    <div className="flex items-center gap-2 hover:text-yellow-300 transition-colors">
+      <Phone className="h-4 w-4" />
+      <span>+234 8012 345 6789</span>
+    </div>
+    <div className="flex items-center gap-2 hover:text-yellow-300 transition-colors">
+      <Mail className="h-4 w-4" />
+      <span>hello@freshfarm.com</span>
+    </div>
+  </div>
+  <div className="flex items-center gap-4">
+    <div className="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
+      Free delivery on orders over {formatPrice(2500000)}!
+    </div>
+    <div className="flex items-center gap-2">
+      <Globe className="h-4 w-4" />
+      <select className="bg-transparent border-none text-white cursor-pointer">
+        <option>English</option>
+        <option>Hausa</option>
+        <option>Yoruba</option>
+        <option>Igbo</option>
+      </select>
+    </div>
+  </div>
+</div>
       </div>
 
       <header className="bg-white shadow-lg border-b sticky top-0 z-50 backdrop-blur-md bg-white/95">
@@ -733,11 +925,11 @@ const FilterSidebar = () => {
               onClick={() => setCurrentPage("home")}
             >
               <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                <span className="text-white font-bold text-xl">F</span>
+                <span className="text-white font-bold text-xl">P</span>
               </div>
               <div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent">
-                  FreshFarm
+                  Protiin
                 </span>
                 <div className="text-xs text-gray-500">Farm to Table</div>
               </div>
@@ -811,13 +1003,11 @@ const FilterSidebar = () => {
                         <div className="space-y-4 max-h-96 overflow-y-auto">
                           {cartItems.map((item) => (
                             <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                              <Image
-                                src={item.image || "/placeholder.svg"}
-                                alt={item.name}
-                                width={60}
-                                height={60}
-                                className="rounded-lg object-cover"
+                              <MiniImagesSlider
+                                images={item.images || []}
+                                name={item.name}
                               />
+
                               <div className="flex-1">
                                 <h4 className="font-semibold text-sm">{item.name}</h4>
                                 <p className="text-emerald-600 font-bold">{formatPrice(item.price)}</p>
@@ -1130,37 +1320,40 @@ const FilterSidebar = () => {
                   {searchQuery && <span> for "{searchQuery}"</span>}
                 </p>
               </div>
-              <div className="flex items-center gap-4">
-                <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-                  <SheetTrigger asChild>
-                    <Button variant="outline" className="gap-2">
-                      <SlidersHorizontal className="h-4 w-4" />
-                      Filters
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-80">
-                    <SheetHeader>
-                      <SheetTitle>Filter Products</SheetTitle>
-                    </SheetHeader>
-                    <div className="mt-6">
-                      <FilterSidebar />
-                    </div>
-                  </SheetContent>
-                </Sheet>
+              <div className="flex items-center gap-2 md:gap-4 flex-wrap md:flex-nowrap">
+  <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+    <SheetTrigger asChild>
+      <Button
+        variant="outline"
+        className="gap-1 px-2 py-2 text-sm md:gap-2 md:px-4"
+      >
+        <SlidersHorizontal className="h-4 w-4" />
+        <span className="hidden sm:inline">Filters</span>
+      </Button>
+    </SheetTrigger>
+    <SheetContent side="left" className="w-72">
+      <SheetHeader>
+        <SheetTitle>Filter Products</SheetTitle>
+      </SheetHeader>
+      <div className="mt-6">
+        <FilterSidebar />
+      </div>
+    </SheetContent>
+  </Sheet>
 
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="featured">Featured First</SelectItem>
-                    <SelectItem value="price-low">Price: Low to High</SelectItem>
-                    <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="rating">Highest Rated</SelectItem>
-                    <SelectItem value="name">Name: A to Z</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+  <Select value={sortBy} onValueChange={setSortBy}>
+    <SelectTrigger className="w-32 sm:w-40 md:w-48 text-sm px-2 py-2">
+      <SelectValue placeholder="Sort by" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="featured">Featured First</SelectItem>
+      <SelectItem value="price-low">Price: Low to High</SelectItem>
+      <SelectItem value="price-high">Price: High to Low</SelectItem>
+      <SelectItem value="rating">Highest Rated</SelectItem>
+      <SelectItem value="name">Name: A to Z</SelectItem>
+    </SelectContent>
+  </Select>
+</div>
             </div>
 
             <div className="grid lg:grid-cols-5 gap-8">
@@ -1462,13 +1655,9 @@ const FilterSidebar = () => {
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex items-center gap-3 p-3 bg-white rounded-lg">
-                      <Image
-                        src={item.image || "/placeholder.svg"}
-                        alt={item.name}
-                        width={50}
-                        height={50}
-                        className="rounded-lg object-cover"
-                      />
+                      <div className="flex gap-2 overflow-x-auto max-w-xs">
+                      <ImageSlider images={item.images || []} alt={item.name} />
+                  </div>
                       <div className="flex-1">
                         <h4 className="font-semibold text-sm">{item.name}</h4>
                         <div className="flex items-center gap-2">
@@ -1525,12 +1714,9 @@ const FilterSidebar = () => {
                     <Card key={product.id} className="hover:shadow-md transition-shadow">
                       <CardContent className="p-3">
                         <div className="flex gap-3">
-                          <Image
-                            src={product.image || "/placeholder.svg"}
-                            alt={product.name}
-                            width={50}
-                            height={50}
-                            className="rounded-lg object-cover"
+                        <MiniImageSlider
+                          images={product.images || []}
+                          name={product.name}
                           />
                           <div className="flex-1">
                             <h4 className="font-semibold text-sm mb-1">{product.name}</h4>
