@@ -1,9 +1,8 @@
-import { authOptions } from "@/lib/auth";
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth"
+import { authOptions } from "@/lib/auth" // if you extracted authOptions
+// or define it inline here if needed
 
-export const dynamic = "force-dynamic"; // Ensure dynamic rendering
+const handler = NextAuth(authOptions)
 
-const { handlers } = NextAuth(authOptions);
-
-export const GET = handlers.GET;
-export const POST = handlers.POST;
+export const GET = handler
+export const POST = handler
