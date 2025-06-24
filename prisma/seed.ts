@@ -8,68 +8,32 @@ async function main() {
   // Create categories
   const categories = await Promise.all([
     prisma.category.upsert({
-      where: { name: 'Fresh Vegetables' },
+      where: { name: 'Animal Based Proteins' },
       update: {},
       create: {
-        name: 'Fresh Vegetables',
-        icon: '🥬',
-        description: 'Fresh, locally sourced vegetables',
+        name: 'Animal Based Proteins',
+        icon: '🥩',
+        description: 'Fresh, Tender sourced meats',
       },
     }),
     prisma.category.upsert({
-      where: { name: 'Grains & Flour' },
+      where: { name: 'Seafood Proteins' },
       update: {},
       create: {
-        name: 'Grains & Flour',
-        icon: '🌾',
-        description: 'Quality grains and flour products',
-      },
-    }),
-    prisma.category.upsert({
-      where: { name: 'Meat & Seafood' },
-      update: {},
-      create: {
-        name: 'Meat & Seafood',
+        name: 'Seafood Proteins',
         icon: '🐟',
         description: 'Fresh meat and seafood',
       },
     }),
     prisma.category.upsert({
-      where: { name: 'Condiments' },
+      where: { name: 'Dairy & Eggs' },
       update: {},
       create: {
-        name: 'Condiments',
-        icon: '🍯',
-        description: 'Spices, sauces, and condiments',
-      },
-    }),
-    prisma.category.upsert({
-      where: { name: 'Dairy Products' },
-      update: {},
-      create: {
-        name: 'Dairy Products',
+        name: 'Dairy & Eggs',
         icon: '🥛',
         description: 'Fresh dairy products',
       },
-    }),
-    prisma.category.upsert({
-      where: { name: 'Fruits' },
-      update: {},
-      create: {
-        name: 'Fruits',
-        icon: '🍎',
-        description: 'Fresh seasonal fruits',
-      },
-    }),
-    prisma.category.upsert({
-      where: { name: 'Beverages' },
-      update: {},
-      create: {
-        name: 'Beverages',
-        icon: '🥤',
-        description: 'Fresh juices and beverages',
-      },
-    }),
+    }),    
   ]);
 
   // Create admin user
@@ -103,106 +67,103 @@ async function main() {
   // });
 
   // Find categories
-  const vegetableCategory = categories.find((c) => c.name === 'Fresh Vegetables')!;
-  const grainCategory = categories.find((c) => c.name === 'Grains & Flour')!;
-  const meatCategory = categories.find((c) => c.name === 'Meat & Seafood')!;
-  const condimentCategory = categories.find((c) => c.name === 'Condiments')!;
-  const dairyCategory = categories.find((c) => c.name === 'Dairy Products')!;
-  const fruitCategory = categories.find((c) => c.name === 'Fruits')!;
-  const beverageCategory = categories.find((c) => c.name === 'Beverages')!;
+  const animalBasedProtein = categories.find((c) => c.name === 'Animal Based Proteins')!;
+  const seafoodCategory = categories.find((c) => c.name === 'Seafood Proteins')!;
+  const dairyCategory = categories.find((c) => c.name === 'Dairy & Eggs')!;  
+
 
   // Define products
   const products = [
     {
-      name: 'Fresh Tomatoes',
-      description: 'Locally grown, vine-ripened tomatoes perfect for salads and cooking',
+      name: 'Fresh Whole Chicken',
+      description: 'Free-range, hormone-free whole chicken ideal for roasting and grilling',
       price: 250000,
       originalPrice: 350000,
-      images: ['https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&h=400&fit=crop&crop=center'],
+      images: ['/images/chicken.jpeg', '/images/chicken2.jpeg'], // Make sure images are in the public/images folder
       rating: 4.8,
       reviews: 124,
-      badge: 'Fresh',
-      tags: ['fresh', 'local', 'organic', 'red'],
+      badge: 'Organic',
+      tags: ['fresh', 'poultry', 'organic', 'meat', 'protein'],
       featured: true,
-      bestSeller: false,
+      bestSeller: true,
       organic: true,
       inStock: true,
       stockCount: 45,
-      categoryId: vegetableCategory.id,
-    },
-    {
-      name: 'Premium Basmati Rice',
-      description: 'Aromatic long-grain basmati rice, perfect for biryanis and pilafs',
-      price: 650000,
-      originalPrice: 800000,
-      images: ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop&crop=center'],
-      rating: 4.9,
-      reviews: 89,
-      badge: 'Best Seller',
-      tags: ['rice', 'basmati', 'premium', 'aromatic'],
-      featured: true,
-      bestSeller: true,
-      organic: false,
-      inStock: true,
-      stockCount: 23,
-      categoryId: grainCategory.id,
-    },
-    {
-      name: 'Organic Spinach',
-      description: 'Fresh organic spinach leaves, rich in iron and vitamins',
-      price: 175000,
-      originalPrice: 250000,
-      images: ['https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=400&fit=crop&crop=center'],
-      rating: 4.7,
-      reviews: 156,
-      badge: 'Organic',
-      tags: ['spinach', 'organic', 'leafy', 'green'],
-      featured: true,
-      bestSeller: false,
-      organic: true,
-      inStock: true,
-      stockCount: 67,
-      categoryId: vegetableCategory.id,
-    },
-    {
-      name: 'Atlantic Salmon',
-      description: 'Wild-caught Atlantic salmon, rich in omega-3 fatty acids',
-      price: 950000,
-      originalPrice: 1150000,
-      images: ['https://images.unsplash.com/photo-1544943910-4c1dc44aab44?w=400&h=400&fit=crop&crop=center'],
-      rating: 4.6,
-      reviews: 67,
-      badge: 'Fresh',
-      tags: ['salmon', 'fish', 'omega3', 'protein'],
-      featured: true,
-      bestSeller: false,
-      organic: false,
-      inStock: true,
-      stockCount: 12,
-      categoryId: meatCategory.id,
-    },
-    {
-      name: 'Organic Honey',
-      description: 'Pure organic honey from local beekeepers',
-      price: 450000,
-      originalPrice: 600000,
-      images: ['https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&h=400&fit=crop&crop=center'],
-      rating: 4.9,
-      reviews: 203,
-      badge: 'Organic',
-      tags: ['honey', 'organic', 'sweet', 'natural'],
-      featured: false,
-      bestSeller: true,
-      organic: true,
-      inStock: true,
-      stockCount: 34,
-      categoryId: condimentCategory.id,
-    },
+      categoryId: animalBasedProtein.id, // You can rename or switch from vegetableCategory if needed
+    },    
+      {
+        name: 'Farm Fresh Eggs',
+        description: 'Organic, free-range eggs packed with protein and flavor — perfect for any meal.',
+        price: 650000,
+        originalPrice: 700000,
+        images: ['/images/egg2.jpeg', '/images/eggs.jpeg'], // Ensure these exist in /public/images
+        rating: 4.9,
+        reviews: 89,
+        badge: 'Best Seller',
+        tags: ['eggs', 'organic', 'protein', 'breakfast'],
+        featured: true,
+        bestSeller: true,
+        organic: true,
+        inStock: true,
+        stockCount: 23,
+        categoryId: dairyCategory.id, // or poultryCategory.id, depending on your category structure
+      },
+      {
+        name: 'Premium Grass-Fed Beef',
+        description: 'Tender and flavorful grass-fed beef cuts, perfect for grilling and roasting.',
+        price: 1500000,
+        originalPrice: 2000000,
+        images: ['/images/beef.jpeg', '/images/beef2.jpeg'], // Ensure these images exist in /public/images
+        rating: 4.7,
+        reviews: 156,
+        badge: 'Organic',
+        tags: ['beef', 'meat', 'grass-fed', 'protein'],
+        featured: true,
+        bestSeller: false,
+        organic: true,
+        inStock: true,
+        stockCount: 67,
+        categoryId: animalBasedProtein.id, // Replace with your actual meat category reference
+      },      
+      {
+        name: 'Titus Mackerel',
+        description: 'Rich and flavorful Titus (mackerel) fish, perfect for stews and grilling. Packed with omega-3.',
+        price: 700000,
+        originalPrice: 1000000,
+        images: ['/images/titus.jpeg', '/images/titus2.jpeg'], // Ensure these are in /public/images
+        rating: 4.6,
+        reviews: 67,
+        badge: 'Fresh',
+        tags: ['titus', 'mackerel', 'fish', 'omega3', 'protein'],
+        featured: true,
+        bestSeller: false,
+        organic: false,
+        inStock: true,
+        stockCount: 12,
+        categoryId: seafoodCategory.id, // or create `seafoodCategory` if you haven't yet
+      },
+      {
+        name: 'Aged Cheddar Cheese',
+        description: 'Rich and sharp aged cheddar cheese, perfect for sandwiches, snacks, and gourmet cooking.',
+        price: 20000,
+        originalPrice: 35000,
+        images: ['/images/chesse3.jpeg', '/images/chesse2.jpeg'], // Make sure these exist in /public/images
+        rating: 4.9,
+        reviews: 203,
+        badge: 'Best Seller',
+        tags: ['cheese', 'cheddar', 'dairy', 'gourmet'],
+        featured: false,
+        bestSeller: true,
+        organic: false,
+        inStock: true,
+        stockCount: 34,
+        categoryId: dairyCategory.id,
+      },      
     {
       name: 'Greek Yogurt',
       description: 'Creamy Greek yogurt packed with probiotics and protein',
-      price: 300000,
-      originalPrice: 400000,
+      price: 100000,
+      originalPrice: 1500000,
       images: ['https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=400&fit=crop&crop=center'],
       rating: 4.8,
       reviews: 156,
@@ -215,6 +176,40 @@ async function main() {
       stockCount: 78,
       categoryId: dairyCategory.id,
     },
+    {
+      name: 'Fresh Crabs',
+      description: 'Wild-caught crabs, perfect for soups, stews, and seafood boils.',
+      price: 300000,
+      originalPrice: 500000,
+      images: ['/images/crabs.jpeg', '/images/crabs2.jpeg'], // Ensure these exist in /public/images
+      rating: 4.8,
+      reviews: 156,
+      badge: 'Protein',
+      tags: ['crab', 'seafood', 'fresh', 'protein'],
+      featured: true,
+      bestSeller: true,
+      organic: false,
+      inStock: true,
+      stockCount: 78,
+      categoryId: seafoodCategory.id, // Use seafood/fish category
+    },
+      {
+        name: 'Fresh Jumbo Shrimp',
+        description: 'Succulent wild-caught jumbo shrimp, ideal for grilling, frying, or seafood pasta.',
+        price: 300000,
+        originalPrice: 4000000,
+        images: ['/images/shrimp.jpeg', '/images/shrimp2.jpeg'], // Ensure these exist in /public/images
+        rating: 4.8,
+        reviews: 156,
+        badge: 'Protein',
+        tags: ['shrimp', 'seafood', 'fresh', 'protein'],
+        featured: true,
+        bestSeller: true,
+        organic: false,
+        inStock: true,
+        stockCount: 78,
+        categoryId: seafoodCategory.id,
+      }      
   ];
 
   // Create products

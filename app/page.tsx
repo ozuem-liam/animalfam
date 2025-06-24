@@ -869,13 +869,27 @@ const FilterSidebar = () => {
   );
 };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading products...</div>
+if (isLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center space-x-4 animate-pulse">
+        {/* Icon Box */}
+        <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg">
+          <span className="text-white font-bold text-xl">P</span>
+        </div>
+
+        {/* Text Content */}
+        <div>
+          <span className="text-2xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent">
+            Protiin
+          </span>
+          <div className="text-xs text-gray-500">Farm to Table</div>
+        </div>
       </div>
-    )
-  }
+    </div>
+  );
+}
+
 
   if (allProducts.length === 0) {
     return (

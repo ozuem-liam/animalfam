@@ -348,7 +348,7 @@ export default function AdminDashboard() {
                     id="categoryIcon"
                     value={categoryForm.icon}
                     onChange={(e) => setCategoryForm({ ...categoryForm, icon: e.target.value })}
-                    placeholder="🥬"
+                    placeholder="🥩"
                     required
                   />
                 </div>
