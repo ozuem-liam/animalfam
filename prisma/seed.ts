@@ -77,8 +77,8 @@ async function main() {
     {
       name: 'Fresh Whole Chicken',
       description: 'Free-range, hormone-free whole chicken ideal for roasting and grilling',
-      price: 250000,
-      originalPrice: 350000,
+      price: 1500000,
+      originalPrice: 3500000,
       images: ['/images/chicken.jpeg', '/images/chicken2.jpeg'], // Make sure images are in the public/images folder
       rating: 4.8,
       reviews: 124,
@@ -145,8 +145,8 @@ async function main() {
       {
         name: 'Aged Cheddar Cheese',
         description: 'Rich and sharp aged cheddar cheese, perfect for sandwiches, snacks, and gourmet cooking.',
-        price: 20000,
-        originalPrice: 35000,
+        price: 200000,
+        originalPrice: 350000,
         images: ['/images/chesse3.jpeg', '/images/chesse2.jpeg'], // Make sure these exist in /public/images
         rating: 4.9,
         reviews: 203,
@@ -196,7 +196,7 @@ async function main() {
       {
         name: 'Fresh Jumbo Shrimp',
         description: 'Succulent wild-caught jumbo shrimp, ideal for grilling, frying, or seafood pasta.',
-        price: 300000,
+        price: 3000000,
         originalPrice: 4000000,
         images: ['/images/shrimp.jpeg', '/images/shrimp2.jpeg'], // Ensure these exist in /public/images
         rating: 4.8,
