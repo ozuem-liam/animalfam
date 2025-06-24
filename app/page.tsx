@@ -903,7 +903,7 @@ const FilterSidebar = () => {
     <div className="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
       Free delivery on orders over {formatPrice(2500000)}!
     </div>
-    <div className="flex items-center gap-2">
+    {/* <div className="flex items-center gap-2">
       <Globe className="h-4 w-4" />
       <select className="bg-transparent border-none text-white cursor-pointer">
         <option>English</option>
@@ -911,7 +911,7 @@ const FilterSidebar = () => {
         <option>Yoruba</option>
         <option>Igbo</option>
       </select>
-    </div>
+    </div> */}
   </div>
 </div>
       </div>
