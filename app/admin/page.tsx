@@ -191,31 +191,38 @@ export default function AdminDashboard() {
   }
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+    e.preventDefault();
+  
+    const isEditing = !!editingCategory;
+    const url = "/api/categories";
+    const method = isEditing ? "PUT" : "POST";
+  
+    const body = isEditing
+      ? JSON.stringify({ id: editingCategory.id, ...categoryForm })
+      : JSON.stringify(categoryForm);
+  
     try {
-      const response = await fetch("/api/categories", {
-        method: "POST",
+      const response = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(categoryForm),
-      })
-
+        body,
+      });
+  
       if (response.ok) {
-        await fetchData()
-        setIsCategoryDialogOpen(false)
-        setCategoryForm({
-          name: "",
-          icon: "",
-          description: "",
-        })
+        await fetchData();
+        setIsCategoryDialogOpen(false);
+        setCategoryForm({ name: "", icon: "", description: "" });
+        setEditingCategory(null); // Clear editing state
+      } else {
+        console.error("Failed to save category");
       }
     } catch (error) {
-      console.error("Error saving category:", error)
+      console.error("Error saving category:", error);
     }
-  }
-
+  };
+  
   const handleDeleteProduct = async (id: string) => {
     if (confirm("Are you sure you want to delete this product?")) {
       try {
@@ -240,7 +247,7 @@ export default function AdminDashboard() {
     });
     setIsCategoryDialogOpen(true);
   };
-  
+
   const handleDeleteCategory = async (id: string) => {
     if (confirm("Are you sure you want to delete this product?")) {
       try {
