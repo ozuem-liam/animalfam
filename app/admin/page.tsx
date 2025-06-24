@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Plus, Package, ShoppingCart, TrendingUp, Edit, Trash2 } from "lucide-react"
+import { Plus, Package, ShoppingCart, TrendingUp, Edit, Trash2, Pencil, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -82,6 +82,7 @@ export default function AdminDashboard() {
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false)
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true)
 
   const [productForm, setProductForm] = useState({
@@ -230,25 +231,50 @@ export default function AdminDashboard() {
       }
     }
   }
+  const handleEditCategory = (category: Category) => {
+    setEditingCategory(category);
+    setCategoryForm({
+      name: category.name,
+      icon: category.icon,
+      description: category.description || "",
+    });
+    setIsCategoryDialogOpen(true);
+  };
+  
+  const handleDeleteCategory = async (id: string) => {
+    if (confirm("Are you sure you want to delete this product?")) {
+      try {
+        const response = await fetch(`/api/categories/${id}`, {
+          method: "DELETE",
+        })
 
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct(product)
-    setProductForm({
-      name: product.name,
-      description: product.description,
-      price: (product.price / 100).toString(),
-      originalPrice: (product.originalPrice / 100).toString(),
-      images: product.images || [],
-      categoryId: product.category.id,
-      tags: product.tags.join(", "),
-      featured: product.featured,
-      bestSeller: product.bestSeller,
-      organic: product.organic,
-      stockCount: product.stockCount.toString(),
-      badge: product.badge || "",
-    })
-    setIsProductDialogOpen(true)
+        if (response.ok) {
+          await fetchData()
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error)
+      }
+    }
   }
+
+    const handleEditProduct = (product: Product) => {
+      setEditingProduct(product)
+      setProductForm({
+        name: product.name,
+        description: product.description,
+        price: (product.price / 100).toString(),
+        originalPrice: (product.originalPrice / 100).toString(),
+        images: product.images || [],
+        categoryId: product.category.id,
+        tags: product.tags.join(", "),
+        featured: product.featured,
+        bestSeller: product.bestSeller,
+        organic: product.organic,
+        stockCount: product.stockCount.toString(),
+        badge: product.badge || "",
+      })
+      setIsProductDialogOpen(true)
+    }
 
   const stats = {
     totalProducts: products.length,
@@ -275,56 +301,64 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">FreshFarm Admin</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Protiin Admin</h1>
             <p className="text-gray-600 text-sm sm:text-base">Manage your ecommerce store</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
-            <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="w-full sm:w-auto">
-                  <Plus className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">Add Category</span>
-                  <span className="sm:hidden">+ Category</span>
+          <Dialog open={isCategoryDialogOpen} onOpenChange={(open) => {
+            if (!open) {
+              setEditingCategory(null);
+              setCategoryForm({ name: "", icon: "", description: "" });
+            }
+            setIsCategoryDialogOpen(open);
+          }}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full sm:w-auto">
+                <Plus className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">Add Category</span>
+                <span className="sm:hidden">+ Category</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>
+                  {editingCategory ? "Edit Category" : "Add New Category"}
+                </DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleCategorySubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="categoryName">Category Name</Label>
+                  <Input
+                    id="categoryName"
+                    value={categoryForm.name}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="categoryIcon">Icon (Emoji)</Label>
+                  <Input
+                    id="categoryIcon"
+                    value={categoryForm.icon}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, icon: e.target.value })}
+                    placeholder="🥬"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="categoryDescription">Description</Label>
+                  <Textarea
+                    id="categoryDescription"
+                    value={categoryForm.description}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  {editingCategory ? "Update Category" : "Add Category"}
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add New Category</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleCategorySubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="categoryName">Category Name</Label>
-                    <Input
-                      id="categoryName"
-                      value={categoryForm.name}
-                      onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="categoryIcon">Icon (Emoji)</Label>
-                    <Input
-                      id="categoryIcon"
-                      value={categoryForm.icon}
-                      onChange={(e) => setCategoryForm({ ...categoryForm, icon: e.target.value })}
-                      placeholder="🥬"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="categoryDescription">Description</Label>
-                    <Textarea
-                      id="categoryDescription"
-                      value={categoryForm.description}
-                      onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    Add Category
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+              </form>
+            </DialogContent>
+          </Dialog>
 
             <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
               <DialogTrigger asChild>
@@ -703,6 +737,7 @@ export default function AdminDashboard() {
                     <TableHead>Description</TableHead>
                     <TableHead>Products</TableHead>
                     <TableHead>Created</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -715,6 +750,23 @@ export default function AdminDashboard() {
                         <Badge>{category._count.products} products</Badge>
                       </TableCell>
                       <TableCell>{new Date().toLocaleDateString()}</TableCell>
+                      <TableCell className="text-right space-x-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleEditCategory(category)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDeleteCategory(category.id)}
+                          >
+                            <Trash className="h-4 w-4 text-red-500" />
+                          </Button>
+                        </TableCell>
+
                     </TableRow>
                   ))}
                 </TableBody>
