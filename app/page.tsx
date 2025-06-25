@@ -22,6 +22,7 @@ import {
   Eye,
   Zap,
   SlidersHorizontal,
+  Filter,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -1376,19 +1377,21 @@ if (isLoading) {
                   </SheetContent>
                 </Sheet>
 
-  <Select value={sortBy} onValueChange={setSortBy}>
-    <SelectTrigger className="w-32 sm:w-40 md:w-48 text-sm px-2 py-2">
-      <SelectValue placeholder="Sort by" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="featured">Featured First</SelectItem>
-      <SelectItem value="price-low">Price: Low to High</SelectItem>
-      <SelectItem value="price-high">Price: High to Low</SelectItem>
-      <SelectItem value="rating">Highest Rated</SelectItem>
-      <SelectItem value="name">Name: A to Z</SelectItem>
-    </SelectContent>
-  </Select>
-</div>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-24 sm:w-28 md:w-40 text-[11px] sm:text-xs px-2 py-1 flex items-center gap-1">
+                    <Filter className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                    <SelectValue placeholder="Sort" />
+                  </SelectTrigger>
+
+                  <SelectContent side="bottom" className="text-sm">
+                    <SelectItem value="featured">Featured</SelectItem>
+                    <SelectItem value="price-low">Price ↑</SelectItem>
+                    <SelectItem value="price-high">Price ↓</SelectItem>
+                    <SelectItem value="rating">Top Rated</SelectItem>
+                    <SelectItem value="name">Name A-Z</SelectItem>
+                  </SelectContent>
+                </Select>
+        </div>
             </div>
 
             <div className="grid lg:grid-cols-5 gap-8">
