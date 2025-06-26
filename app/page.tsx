@@ -880,22 +880,19 @@ if (isLoading) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="flex items-center space-x-4 animate-pulse">
-        {/* Icon Box */}
-        <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg">
-          <span className="text-white font-bold text-xl">P</span>
-        </div>
-
-        {/* Text Content */}
-        <div className="text-center sm:text-left">
-          <span className="text-2xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent block">
-            Protiin
-          </span>
-          <div className="text-xs text-gray-500">Farm to Table</div>
+        {/* Custom Logo Box */}
+        <div className="w-20 h-14 sm:w-32 sm:h-38 bg-transparent p-0 rounded-xl overflow-hidden isolate flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+          <img
+            src="/images/ecommerce_logo.png"
+            alt="Protiin logo"
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
     </div>
   );
 }
+
 
 
   if (allProducts.length === 0) {
@@ -946,14 +943,18 @@ if (isLoading) {
         className="flex items-center gap-2 sm:gap-3 group p-0 hover:bg-transparent"
         onClick={() => setCurrentPage("home")}
       >
-        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-          <span className="text-white font-bold text-lg sm:text-xl">P</span>
+        <div className="w-20 h-14 sm:w-32 sm:h-38 rounded-xl overflow-hidden isolate flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+          <img
+            src="/images/ecommerce_logo.png"
+            alt="Protiin logo"
+            className="w-full h-full  object-cover"
+          />
         </div>
         <div>
-          <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent">
+          {/* <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent">
             Protiin
-          </span>
-          <div className="text-xs text-gray-500">Farm to Table</div>
+          </span> */}
+          {/* <div className="text-xs text-gray-500">Farm to Table</div> */}
         </div>
       </Button>
 

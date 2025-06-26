@@ -41,7 +41,7 @@
     </Button>
     <Button
       asChild
-      className="hidden md:inline-flex px-3 py-1.5 text-sm sm:px-4 sm:py-2 rounded-md bg-aura-purple hover:bg-aura-purple/80 text-cosmos-light focus:ring-2 focus:ring-aura-purple"
+      className="hidden md:bg-[#D89C06] md:text-white md:inline-flex px-3 py-1.5 text-sm sm:px-4 sm:py-2 rounded-md bg-aura-purple hover:bg-aura-purple/80 text-cosmos-light focus:ring-2 focus:ring-aura-purple"
     >
       <Link href="/auth/signup">Sign up</Link>
     </Button>
