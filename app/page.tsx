@@ -1586,7 +1586,7 @@ if (isLoading) {
             </div>
 
             {/* Bank Transfer */}
-            <div className="border rounded-lg p-3 sm:p-4">
+            {/* <div className="border rounded-lg p-3 sm:p-4">
               <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
                 <input type="radio" name="payment" value="transfer" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
                 <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
@@ -1597,10 +1597,10 @@ if (isLoading) {
               <p className="text-xs sm:text-sm text-gray-600 ml-4 sm:ml-6">
                 Pay directly from your bank account using USSD, Internet Banking, or Bank App
               </p>
-            </div>
+            </div> */}
 
             {/* USSD Payment */}
-            <div className="border rounded-lg p-3 sm:p-4">
+            {/* <div className="border rounded-lg p-3 sm:p-4">
               <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
                 <input type="radio" name="payment" value="ussd" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
                 <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
@@ -1617,15 +1617,15 @@ if (isLoading) {
                   <Badge variant="outline" className="text-xs">UBA *919#</Badge>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Mobile Money */}
-            <div className="border rounded-lg p-3 sm:p-4">
+            {/* <div className="border rounded-lg p-3 sm:p-4">
               <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
                 <input type="radio" name="payment" value="mobile" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
                 <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
                   📲 Mobile Money
-                  <Badge className="bg-purple-100 text-purple-800 text-xs">Quick & Easy</Badge>
+                  <Badge className="b g-purple-100 text-purple-800 text-xs">Quick & Easy</Badge>
                 </label>
               </div>
               <div className="ml-4 sm:ml-6 space-y-2">
@@ -1637,10 +1637,10 @@ if (isLoading) {
                   <Badge variant="outline" className="text-xs">Carbon</Badge>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Pay on Delivery */}
-            <div className="border rounded-lg p-3 sm:p-4">
+            {/* <div className="border rounded-lg p-3 sm:p-4">
               <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
                 <input type="radio" name="payment" value="cod" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
                 <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
@@ -1652,7 +1652,7 @@ if (isLoading) {
                 <p className="text-xs sm:text-sm text-gray-600">Pay with cash or POS when your order arrives</p>
                 <p className="text-xs text-orange-600">Additional ₦500 service fee applies</p>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Security Notice */}
