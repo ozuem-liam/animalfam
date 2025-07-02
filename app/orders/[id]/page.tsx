@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface OrderItem {
   quantity: number
-  product: { name: string; price: number; image?: string }
+  product: { name: string; price: number }
 }
 
 interface Order {
@@ -106,21 +106,21 @@ export default function OrderDetailPage() {
   if (!session || !order || error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-        <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <div className="container mx-auto px-4 py-6 sm:py-8 max-w-5xl">
           <Button
             variant="ghost"
             onClick={() => router.back()}
-            className="mb-6 text-green-600 hover:text-green-700 hover:bg-green-50"
+            className="mb-4 sm:mb-6 text-green-600 hover:text-green-700 hover:bg-green-50 text-sm sm:text-base"
             aria-label="Back to orders"
           >
-            <ArrowLeft className="h-5 w-5 mr-2" />
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             Back to Orders
           </Button>
           <Card className="shadow-md border-0 bg-white">
-            <CardContent className="p-8 text-center">
-              <XCircle className="mx-auto h-12 w-12 text-red-500 mb-4" aria-hidden="true" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">{error || "Order not found"}</h3>
-              <div className="flex justify-center gap-4">
+            <CardContent className="p-6 sm:p-8 text-center">
+              <XCircle className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-red-500 mb-4" aria-hidden="true" />
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">{error || "Order not found"}</h3>
+              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                 <Button
                   variant="outline"
                   onClick={() => {
@@ -128,14 +128,14 @@ export default function OrderDetailPage() {
                     setLoading(true)
                     fetchOrder()
                   }}
-                  className="border-green-200 text-green-600 hover:bg-green-50"
+                  className="border-green-200 text-green-600 hover:bg-green-50 text-sm sm:text-base px-4 py-2"
                 >
                   Try Again
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => router.push("/orders")}
-                  className="border-green-200 text-green-600 hover:bg-green-50"
+                  className="border-green-200 text-green-600 hover:bg-green-50 text-sm sm:text-base px-4 py-2"
                 >
                   View All Orders
                 </Button>
@@ -159,70 +159,60 @@ export default function OrderDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="container mx-auto px-4 py-6 sm:py-8 max-w-5xl">
         <Button
           variant="ghost"
           onClick={() => router.back()}
-          className="mb-6 text-green-600 hover:text-green-700 hover:bg-green-50"
+          className="mb-4 sm:mb-6 text-green-600 hover:text-green-700 hover:bg-green-50 text-sm sm:text-base"
           aria-label="Back to orders"
         >
-          <ArrowLeft className="h-5 w-5 mr-2" />
+          <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
           Back to Orders
         </Button>
 
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <ShoppingBag className="h-6 w-6 text-green-600" aria-hidden="true" />
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" aria-hidden="true" />
                 Order #{order.orderNumber}
               </h1>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
                 Placed on {format(new Date(order.createdAt), "MMMM dd, yyyy 'at' h:mm a")}
               </p>
             </div>
             <Badge
-              className={`${statusConfigData.className} flex items-center gap-1 text-sm font-medium px-3 py-1 rounded-full`}
+              className={`${statusConfigData.className} flex items-center gap-1 text-xs sm:text-sm font-medium px-2 sm:px-3 py-1 rounded-full`}
               aria-label={`Order status: ${statusConfigData.label}`}
             >
-              <StatusIcon className="h-4 w-4" aria-hidden="true" />
+              <StatusIcon className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
               {statusConfigData.label}
             </Badge>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            {/* Order Items */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card className="shadow-md border-0 bg-white">
               <CardHeader className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-t-md">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Package className="h-5 w-5" aria-hidden="true" />
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <Package className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                   Items Ordered
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-4">
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-3 sm:space-y-4">
                   {order.items.map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100"
+                      className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-100"
                     >
-                      <img
-                        src={item.product.image || "/placeholder-image.jpg"}
-                        alt={item.product.name}
-                        className="w-20 h-20 object-contain rounded-md bg-white border border-gray-200"
-                        onError={(e) => {
-                          e.currentTarget.src = "/placeholder-image.jpg"
-                        }}
-                        loading="lazy"
-                      />
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{item.product.name}</h4>
-                        <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                        <h4 className="font-semibold text-gray-900 text-sm sm:text-base">{item.product.name}</h4>
+                        <p className="text-xs sm:text-sm text-gray-500">Quantity: {item.quantity}</p>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-green-600">
+                      <div className="text-left sm:text-right">
+                        <p className="font-semibold text-green-600 text-sm sm:text-base">
                           {formatPrice(item.product.price * item.quantity)}
                         </p>
                         <p className="text-xs text-gray-500">{formatPrice(item.product.price)} each</p>
@@ -234,30 +224,28 @@ export default function OrderDetailPage() {
             </Card>
           </div>
 
-          <div className="space-y-6">
-            {/* Order Summary */}
+          <div className="space-y-4 sm:space-y-6">
             <Card className="shadow-md border-0 bg-white">
               <CardHeader className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-t-md">
-                <CardTitle className="text-lg">Order Summary</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Order Summary</CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">Total</span>
-                  <span className="font-semibold text-green-600">{formatPrice(order.totalAmount)}</span>
+                  <span className="text-xs sm:text-sm font-medium text-gray-700">Total</span>
+                  <span className="font-semibold text-green-600 text-sm sm:text-base">{formatPrice(order.totalAmount)}</span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Shipping Information */}
             <Card className="shadow-md border-0 bg-white">
               <CardHeader className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-t-md">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <MapPin className="h-5 w-5" aria-hidden="true" />
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                   Shipping Address
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="text-sm text-gray-700 space-y-1">
+              <CardContent className="p-4 sm:p-6">
+                <div className="text-xs sm:text-sm text-gray-700 space-y-1">
                   <p className="font-semibold">{order.shippingAddress.name}</p>
                   <p>{order.shippingAddress.street}</p>
                   <p>
@@ -268,17 +256,16 @@ export default function OrderDetailPage() {
               </CardContent>
             </Card>
 
-            {/* Payment Information */}
             <Card className="shadow-md border-0 bg-white">
               <CardHeader className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-t-md">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <CreditCard className="h-5 w-5" aria-hidden="true" />
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                   Payment Status
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <Badge
-                  className={`${paymentStatusData.className} px-3 py-1 text-sm font-medium rounded-full`}
+                  className={`${paymentStatusData.className} px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full`}
                   aria-label={`Payment status: ${order.paymentStatus}`}
                 >
                   {order.paymentStatus}
@@ -295,34 +282,33 @@ export default function OrderDetailPage() {
 function OrderDetailSkeleton() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <Skeleton className="h-10 w-32 mb-6" />
-        <div className="flex justify-between items-start mb-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8 max-w-5xl">
+        <Skeleton className="h-8 sm:h-10 w-24 sm:w-32 mb-4 sm:mb-6" />
+        <div className="flex flex-col sm:flex-row justify-between items-start mb-6 sm:mb-8">
           <div>
-            <Skeleton className="h-8 w-48 mb-2" />
-            <Skeleton className="h-4 w-64" />
+            <Skeleton className="h-6 sm:h-8 w-40 sm:w-48 mb-2" />
+            <Skeleton className="h-3 sm:h-4 w-48 sm:w-64" />
           </div>
-          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-5 sm:h-6 w-20 sm:w-24" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card className="shadow-md border-0 bg-white">
               <CardHeader>
-                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-5 sm:h-6 w-24 sm:w-32" />
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {[1, 2].map((i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 border rounded-lg">
-                      <Skeleton className="w-20 h-20 rounded-md" />
+                    <div key={i} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 border rounded-lg">
                       <div className="flex-1">
-                        <Skeleton className="h-5 w-32 mb-2" />
-                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-4 sm:h-5 w-28 sm:w-32 mb-1 sm:mb-2" />
+                        <Skeleton className="h-3 sm:h-4 w-20 sm:w-24" />
                       </div>
-                      <div className="text-right">
-                        <Skeleton className="h-5 w-16 mb-1" />
-                        <Skeleton className="h-4 w-12" />
+                      <div className="text-left sm:text-right">
+                        <Skeleton className="h-4 sm:h-5 w-12 sm:w-16 mb-1" />
+                        <Skeleton className="h-3 sm:h-4 w-10 sm:w-12" />
                       </div>
                     </div>
                   ))}
@@ -331,17 +317,17 @@ function OrderDetailSkeleton() {
             </Card>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {[1, 2, 3].map((i) => (
               <Card key={i} className="shadow-md border-0 bg-white">
                 <CardHeader>
-                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-5 sm:h-6 w-24 sm:w-32" />
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
+                  <div className="space-y-2 sm:space-y-3">
+                    <Skeleton className="h-3 sm:h-4 w-full" />
+                    <Skeleton className="h-3 sm:h-4 w-3/4" />
+                    <Skeleton className="h-3 sm:h-4 w-1/2" />
                   </div>
                 </CardContent>
               </Card>
