@@ -144,7 +144,6 @@ export default function FoodEcommerce() {
     script.async = true
 
     script.onload = () => {
-      console.log("Paystack script loaded successfully")
       setIsPaystackReady(true)
     }
 
