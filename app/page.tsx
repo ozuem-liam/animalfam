@@ -111,7 +111,18 @@ export default function FoodEcommerce() {
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
+
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [email, setEmail] = useState("")
+  const [deliveryAddress, setDeliveryAddress] = useState("")
+  const [deliveryCity, setDeliveryCity] = useState("")
+  const [deliveryState, setDeliveryState] = useState("")
+
+  
   const [filters, setFilters] = useState<FilterState>({
     priceRange: [0, 5000000],
     categories: [],
@@ -124,6 +135,31 @@ export default function FoodEcommerce() {
   const { data: session } = useSession()
   const [showLoginRequired, setShowLoginRequired] = useState(false)
   const [loginAction, setLoginAction] = useState("")
+
+  const [isPaystackReady, setIsPaystackReady] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://js.paystack.co/v1/inline.js"
+    script.async = true
+
+    script.onload = () => {
+      console.log("Paystack script loaded successfully")
+      setIsPaystackReady(true)
+    }
+
+    script.onerror = () => {
+      console.error("Failed to load Paystack script")
+    }
+
+    document.body.appendChild(script)
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script)
+      }
+    }
+  }, [])
 
   // Fetch products and categories from API
   const fetchProductsAndCategories = async () => {
@@ -1452,34 +1488,62 @@ if (isLoading) {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             {/* Stacked inputs on mobile, 2-column on sm+ */}
             <div>
+            <div>
+
+    </div>
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">First Name *</label>
-              <Input placeholder="Enter your first name" className="text-xs sm:text-sm w-full h-8 sm:h-10" />
-            </div>
+              <Input
+                        placeholder="Enter your first name"
+                        className="text-xs sm:text-sm w-full h-8 sm:h-10"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+              </div>
             <div>
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Last Name *</label>
-              <Input placeholder="Enter your last name" className="text-xs sm:text-sm w-full h-8 sm:h-10" />
-            </div>
+              <Input
+                        placeholder="Enter your last name"
+                        className="text-xs sm:text-sm w-full h-8 sm:h-10"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+              </div>
             <div className="sm:col-span-2">
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Phone Number *</label>
               <div className="flex">
                 <div className="flex items-center px-2 sm:px-3 bg-gray-100 border border-r-0 rounded-l-md">
                   <span className="text-xs sm:text-sm font-medium">+234</span>
                 </div>
-                <Input placeholder="8012345678" className="text-xs sm:text-sm rounded-l-none flex-1 h-8 sm:h-10" />
-              </div>
+                <Input
+                          placeholder="8012345678"
+                          className="text-xs sm:text-sm rounded-l-none flex-1 h-8 sm:h-10"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                        />
+                </div>
             </div>
             <div className="sm:col-span-2">
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Email Address *</label>
-              <Input type="email" placeholder="your.email@example.com" className="text-xs sm:text-sm w-full h-8 sm:h-10" />
-            </div>
+              <Input
+                        type="email"
+                        placeholder="your.email@example.com"
+                        className="text-xs sm:text-sm w-full h-8 sm:h-10"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+              </div>
             <div className="sm:col-span-2">
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Delivery Address *</label>
-              <Input placeholder="Enter your full address" className="text-xs sm:text-sm w-full h-8 sm:h-10" />
+              <Input
+                        placeholder="Enter your full address"
+                        className="text-xs sm:text-sm w-full h-8 sm:h-10"
+                        value={deliveryAddress}
+                        onChange={(e) => setDeliveryAddress(e.target.value)}
+                      />
             </div>
             <div>
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">State *</label>
-              <Select>
-                <SelectTrigger className="text-xs sm:text-sm h-8 sm:h-10">
+              <Select value={deliveryState} onValueChange={setDeliveryState}>                <SelectTrigger className="text-xs sm:text-sm h-8 sm:h-10">
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
@@ -1498,7 +1562,12 @@ if (isLoading) {
             </div>
             <div>
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">City/LGA *</label>
-              <Input placeholder="Enter city or LGA" className="text-xs sm:text-sm w-full h-8 sm:h-10" />
+              <Input
+                        placeholder="Enter city or LGA"
+                        className="text-xs sm:text-sm w-full h-8 sm:h-10"
+                        value={deliveryCity}
+                        onChange={(e) => setDeliveryCity(e.target.value)}
+                      />
             </div>
           </div>
 
@@ -1553,7 +1622,7 @@ if (isLoading) {
           {/* Payment Options */}
           <div className="space-y-3 sm:space-y-4">
             {/* Card Payment */}
-            <div className="border rounded-lg p-3 sm:p-4">
+            {/* <div className="border rounded-lg p-3 sm:p-4">
               <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
                 <input type="radio" name="payment" value="card" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" defaultChecked />
                 <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
@@ -1582,75 +1651,6 @@ if (isLoading) {
                   <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Cardholder Name</label>
                   <Input placeholder="Name on card" className="text-xs sm:text-sm w-full h-8 sm:h-10" />
                 </div>
-              </div>
-            </div>
-
-            {/* Bank Transfer */}
-            {/* <div className="border rounded-lg p-3 sm:p-4">
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
-                <input type="radio" name="payment" value="transfer" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
-                <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
-                  🏦 Bank Transfer
-                  <Badge className="bg-green-100 text-green-800 text-xs">Instant</Badge>
-                </label>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-600 ml-4 sm:ml-6">
-                Pay directly from your bank account using USSD, Internet Banking, or Bank App
-              </p>
-            </div> */}
-
-            {/* USSD Payment */}
-            {/* <div className="border rounded-lg p-3 sm:p-4">
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
-                <input type="radio" name="payment" value="ussd" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
-                <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
-                  📱 USSD Payment
-                  <Badge className="bg-blue-100 text-blue-800 text-xs">No Internet Required</Badge>
-                </label>
-              </div>
-              <div className="ml-4 sm:ml-6 space-y-2">
-                <p className="text-xs sm:text-sm text-gray-600">Pay using your phone without internet connection</p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline" className="text-xs">GTBank *737#</Badge>
-                  <Badge variant="outline" className="text-xs">Access *901#</Badge>
-                  <Badge variant="outline" className="text-xs">Zenith *966#</Badge>
-                  <Badge variant="outline" className="text-xs">UBA *919#</Badge>
-                </div>
-              </div>
-            </div> */}
-
-            {/* Mobile Money */}
-            {/* <div className="border rounded-lg p-3 sm:p-4">
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
-                <input type="radio" name="payment" value="mobile" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
-                <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
-                  📲 Mobile Money
-                  <Badge className="b g-purple-100 text-purple-800 text-xs">Quick & Easy</Badge>
-                </label>
-              </div>
-              <div className="ml-4 sm:ml-6 space-y-2">
-                <p className="text-xs sm:text-sm text-gray-600">Pay with your mobile wallet</p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline" className="text-xs">Opay</Badge>
-                  <Badge variant="outline" className="text-xs">PalmPay</Badge>
-                  <Badge variant="outline" className="text-xs">Kuda</Badge>
-                  <Badge variant="outline" className="text-xs">Carbon</Badge>
-                </div>
-              </div>
-            </div> */}
-
-            {/* Pay on Delivery */}
-            {/* <div className="border rounded-lg p-3 sm:p-4">
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
-                <input type="radio" name="payment" value="cod" className="text-emerald-600 h-4 w-4 sm:h-5 sm:w-5" />
-                <label className="font-medium flex items-center gap-2 text-xs sm:text-sm">
-                  🚚 Pay on Delivery
-                  <Badge className="bg-orange-100 text-orange-800 text-xs">Cash/POS</Badge>
-                </label>
-              </div>
-              <div className="ml-4 sm:ml-6 space-y-2">
-                <p className="text-xs sm:text-sm text-gray-600">Pay with cash or POS when your order arrives</p>
-                <p className="text-xs text-orange-600">Additional ₦500 service fee applies</p>
               </div>
             </div> */}
           </div>
@@ -1782,212 +1782,287 @@ if (isLoading) {
 
         {/* Place Order Button */}
         <div className="space-y-3 sm:space-y-4">
-          <Button
-            className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-3 sm:py-4 text-base sm:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        <Button
+            className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-3 sm:py-4 text-sm sm:text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             onClick={async () => {
+              // Validate form inputs
+              if (!firstName || !lastName || !phone || !email || !deliveryAddress || !deliveryCity || !deliveryState) {
+                alert("Please fill in all required fields.");
+                return;
+              }
+
+              const phoneRegex = /^[0-9]{10}$/;
+              if (!phoneRegex.test(phone)) {
+                alert("Please enter a valid phone number (10 digits).");
+                return;
+              }
+
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+              }
+
               try {
+                // Prepare order data
                 const orderData = {
+                  firstName,
+                  lastName,
+                  phone: `+234${phone}`,
+                  email,
+                  deliveryAddress,
+                  deliveryCity,
+                  deliveryState,
+                  deliveryFee: getDeliveryFee(deliveryOption),
+                  totalAmount: getTotalWithDelivery(deliveryOption),
+                  paymentMethod: "paystack",
                   items: cartItems.map((item) => ({
                     productId: item.id,
                     quantity: item.quantity,
-                    price: item.price / 100,
+                    price: item.price,
                   })),
-                  totalAmount: getTotalWithDelivery(deliveryOption) / 100,
-                  deliveryFee: 0,
-                  deliveryAddress: "Sample Address",
-                  deliveryCity: "Lagos",
-                  deliveryState: "Lagos",
-                  phone: "+2348012345678",
-                  email: "customer@example.com",
-                  firstName: "John",
-                  lastName: "Doe",
-                  paymentMethod: "card",
                 };
 
-                const orderResponse = await fetch("/api/orders", {
+                // Create order
+                const response = await fetch("/api/orders", {
                   method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
+                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(orderData),
                 });
 
-                const order = await orderResponse.json();
+                const result = await response.json();
+                console.log("Order API response:", result);
 
-                if (orderResponse.ok) {
-                  const paymentResponse = await fetch("/api/payment/initialize", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      orderId: order.id,
-                      email: orderData.email,
-                      amount: getTotalPrice() / 100,
-                      callbackUrl: `${window.location.origin}/payment/callback`,
-                    }),
-                  });
-
-                  const paymentData = await paymentResponse.json();
-
-                  if (paymentData.status) {
-                    window.location.href = paymentData.data.authorization_url;
-                  } else {
-                    alert("Failed to initialize payment. Please try again.");
-                  }
-                } else {
-                    alert("Failed to create order. Please try again.");
+                if (!response.ok) {
+                  throw new Error("Failed to create order");
                 }
-              } catch (error) {
-                console.error("Error processing order:", error);
-                alert("An error occurred. Please try again.");
+
+                const orderId = result.id;
+                const paystackKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
+
+                if (!paystackKey) {
+                  throw new Error("Paystack public key is not configured. Please contact support.");
+                }
+
+                const totalAmountInKobo = Math.round(getTotalWithDelivery(deliveryOption) * 100);
+                if (totalAmountInKobo <= 0) {
+                  throw new Error("Invalid payment amount. Total must be greater than zero.");
+                }
+
+                // Initialize payment using your API
+                const initResponse = await fetch("/api/payment/initialize", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    email,
+                    amount: totalAmountInKobo,
+                    orderId,
+                  }),
+                });
+
+                const initResult = await initResponse.json();
+                console.log("Initialize payment response:", initResult);
+
+                if (!initResponse.ok || !initResult.data?.reference) {
+                  throw new Error(initResult.message || "Failed to initialize payment");
+                }
+
+                const paystackRef = initResult.data.reference;
+
+                window.location.href = initResult.data.authorization_url;
+
+                // Set up and open Paystack popup
+                const handler = window.PaystackPop.setup({
+                  key: paystackKey,
+                  email,
+                  amount: totalAmountInKobo,
+                  currency: "NGN",
+                  ref: paystackRef,
+                  metadata: {
+                    orderId,
+                    userId: session?.user?.id || "anonymous",
+                  },
+                  callback: async function (response) {
+                    try {
+                      const verifyResponse = await fetch("/api/payment/verify", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          reference: response.reference,
+                          orderId,
+                        }),
+                      });
+                      const verifyResult = await verifyResponse.json();
+
+                      if (verifyResult.status === "success") {
+                        setCartItems([]);
+                        setIsCheckoutOpen(false);
+                        alert("Payment successful! Your order has been placed.");
+                      } else {
+                        throw new Error("Payment verification failed");
+                      }
+                    } catch (error: any) {
+                      console.error("Payment verification error:", error.message);
+                      alert("Payment verification failed. Please contact support.");
+                    }
+                  },
+                  onClose: () => {
+                    setError("Payment cancelled. Your order is still pending.");
+                  },
+                });
+
+                handler.openIframe();
+              } catch (error: any) {
+                console.error("Checkout error:", error.message, error.stack);
+                setError(error.message || "An error occurred during checkout. Please try again.");
+              } finally {
+                setIsLoading(false);
               }
             }}
           >
-            <Shield className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-            Complete Order - {formatPrice(getTotalWithDelivery(deliveryOption))}
+            Pay {formatPrice(getTotalWithDelivery(deliveryOption))} with Paystack
           </Button>
-          <div className="text-center">
-            <p className="text-xs text-gray-500">
-              By placing this order, you agree to our{" "}
-              <Link href="#" className="text-emerald-600 hover:underline">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="#" className="text-emerald-600 hover:underline">
-                Privacy Policy
-              </Link>
-            </p>
-          </div>
+
+                <p className="text-xs sm:text-sm text-gray-500 text-center">
+                  By placing your order, you agree to our{" "}
+                  <Link href="/terms" className="text-emerald-600 hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" className="text-emerald-600 hover:underline">
+                    Privacy Policy
+                  </Link>
+                  .
+                </p>
+              </div>
         </div>
       </div>
-    </div>
-  </DialogContent>
-</Dialog>
-      {/* Login Required Dialog */}
-      <LoginRequired
-        isOpen={showLoginRequired}
-        onClose={() => setShowLoginRequired(false)}
-        action={loginAction}
-        onSuccess={() => {
-          // If user was trying to checkout, open checkout dialog
-          if (loginAction === "proceed to checkout") {
-            setIsCheckoutOpen(true)
-          }
-        }}
-      />
+    </DialogContent>
+  </Dialog>
+        {/* Login Required Dialog */}
+        <LoginRequired
+          isOpen={showLoginRequired}
+          onClose={() => setShowLoginRequired(false)}
+          action={loginAction}
+          onSuccess={() => {
+            // If user was trying to checkout, open checkout dialog
+            if (loginAction === "proceed to checkout") {
+              setIsCheckoutOpen(true)
+            }
+          }}
+        />
 
-      {/* Enhanced Newsletter */}
-      <section className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/placeholder.svg?height=400&width=800')] opacity-10"></div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative">
-          <div className="animate-in slide-in-from-bottom duration-700">
-            <h2 className="text-4xl font-bold text-white mb-4">Stay Fresh with Our Newsletter</h2>
-            <p className="text-emerald-100 mb-8 text-lg">
-              Get exclusive deals on featured products, fresh arrivals, and healthy recipes delivered to your inbox
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <Input
-                placeholder="Enter your email"
-                className="flex-1 bg-white/90 backdrop-blur border-0 py-3 rounded-xl"
-              />
-              <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-105">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">F</span>
-                </div>
-                <div>
-                  <span className="text-xl font-bold">FreshFarm</span>
-                  <div className="text-xs text-gray-400">Farm to Table</div>
-                </div>
-              </div>
-              <p className="text-gray-400">
-                Bringing fresh, quality ingredients from farm to your table with love and care across Nigeria.
+        {/* Enhanced Newsletter */}
+        <section className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/placeholder.svg?height=400&width=800')] opacity-10"></div>
+          <div className="max-w-4xl mx-auto px-4 text-center relative">
+            <div className="animate-in slide-in-from-bottom duration-700">
+              <h2 className="text-4xl font-bold text-white mb-4">Stay Fresh with Our Newsletter</h2>
+              <p className="text-emerald-100 mb-8 text-lg">
+                Get exclusive deals on featured products, fresh arrivals, and healthy recipes delivered to your inbox
               </p>
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="h-4 w-4" />
-                <span>+234 8012 345 6789</span>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-lg">Quick Links</h3>
-              <ul className="space-y-3 text-gray-400">
-                {["About Us", "Contact", "FAQ", "Shipping Info", "Returns"].map((link) => (
-                  <li key={link}>
-                    <Link
-                      href="#"
-                      className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
-                    >
-                      {link}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-lg">Featured Categories</h3>
-              <ul className="space-y-3 text-gray-400">
-                {categories.slice(1, 6).map((category) => (
-                  <li key={category.name}>
-                    <button
-                      onClick={() => handleCategoryClick(category.name)}
-                      className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block text-left"
-                    >
-                      {category.icon} {category.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-lg">Customer Service</h3>
-              <ul className="space-y-3 text-gray-400">
-                {["Help Center", "Track Order", "Privacy Policy", "Terms of Service"].map((link) => (
-                  <li key={link}>
-                    <Link
-                      href="#"
-                      className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
-                    >
-                      {link}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <Separator className="bg-gray-800 mb-8" />
-
-          <div className="flex flex-col md:flex-row justify-between items-center text-gray-400">
-            <p>&copy; 2024 FreshFarm. All rights reserved.</p>
-            <div className="flex items-center gap-6 mt-4 md:mt-0">
-              <span>Follow us:</span>
-              <div className="flex gap-4">
-                {["Facebook", "Twitter", "Instagram"].map((social) => (
-                  <Link key={social} href="#" className="hover:text-white transition-colors">
-                    {social}
-                  </Link>
-                ))}
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <Input
+                  placeholder="Enter your email"
+                  className="flex-1 bg-white/90 backdrop-blur border-0 py-3 rounded-xl"
+                />
+                <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-105">
+                  Subscribe
+                </Button>
               </div>
             </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </section>
+
+        {/* Enhanced Footer */}
+        <footer className="bg-gray-900 text-white py-16">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">F</span>
+                  </div>
+                  <div>
+                    <span className="text-xl font-bold">FreshFarm</span>
+                    <div className="text-xs text-gray-400">Farm to Table</div>
+                  </div>
+                </div>
+                <p className="text-gray-400">
+                  Bringing fresh, quality ingredients from farm to your table with love and care across Nigeria.
+                </p>
+                <div className="flex items-center gap-2 text-sm">
+                  <Phone className="h-4 w-4" />
+                  <span>+234 8012 345 6789</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-4 text-lg">Quick Links</h3>
+                <ul className="space-y-3 text-gray-400">
+                  {["About Us", "Contact", "FAQ", "Shipping Info", "Returns"].map((link) => (
+                    <li key={link}>
+                      <Link
+                        href="#"
+                        className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
+                      >
+                        {link}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-4 text-lg">Featured Categories</h3>
+                <ul className="space-y-3 text-gray-400">
+                  {categories.slice(1, 6).map((category) => (
+                    <li key={category.name}>
+                      <button
+                        onClick={() => handleCategoryClick(category.name)}
+                        className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block text-left"
+                      >
+                        {category.icon} {category.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-4 text-lg">Customer Service</h3>
+                <ul className="space-y-3 text-gray-400">
+                  {["Help Center", "Track Order", "Privacy Policy", "Terms of Service"].map((link) => (
+                    <li key={link}>
+                      <Link
+                        href="#"
+                        className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
+                      >
+                        {link}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <Separator className="bg-gray-800 mb-8" />
+
+            <div className="flex flex-col md:flex-row justify-between items-center text-gray-400">
+              <p>&copy; 2024 FreshFarm. All rights reserved.</p>
+              <div className="flex items-center gap-6 mt-4 md:mt-0">
+                <span>Follow us:</span>
+                <div className="flex gap-4">
+                  {["Facebook", "Twitter", "Instagram"].map((social) => (
+                    <Link key={social} href="#" className="hover:text-white transition-colors">
+                      {social}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
   )
 }

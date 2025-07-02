@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // Initialize payment with Paystack
     const paymentData = {
       email,
-      amount: Math.round(amount * 100), // Convert to kobo
+      amount, // ✅ Already in kobo from frontend
       reference,
       callback_url: callbackUrl || `${process.env.NEXTAUTH_URL}/payment/callback`,
       metadata: {
@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
         data: {
           paymentRef: reference,
           paymentStatus: "PENDING",
+          totalAmount: amount / 100,
         },
       })
 

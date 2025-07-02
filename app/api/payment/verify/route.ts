@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Check if payment amount matches order amount
-      const expectedAmount = order.totalAmount + order.deliveryFee
+      const expectedAmount = (order.totalAmount + order.deliveryFee) * 100
       const paidAmount = verificationResponse.data.amount
 
       if (paidAmount !== expectedAmount) {
@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
         data: {
           paymentStatus: "PAID",
           status: "CONFIRMED",
+          
         },
         include: {
           items: {
