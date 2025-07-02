@@ -1831,7 +1831,6 @@ if (isLoading) {
                 });
 
                 const result = await response.json();
-                console.log("Order API response:", result);
 
                 if (!response.ok) {
                   throw new Error("Failed to create order");
@@ -1861,7 +1860,6 @@ if (isLoading) {
                 });
 
                 const initResult = await initResponse.json();
-                console.log("Initialize payment response:", initResult);
 
                 if (!initResponse.ok || !initResult.data?.reference) {
                   throw new Error(initResult.message || "Failed to initialize payment");
@@ -1913,7 +1911,6 @@ if (isLoading) {
 
                 handler.openIframe();
               } catch (error: any) {
-                console.error("Checkout error:", error.message, error.stack);
                 setError(error.message || "An error occurred during checkout. Please try again.");
               } finally {
                 setIsLoading(false);
