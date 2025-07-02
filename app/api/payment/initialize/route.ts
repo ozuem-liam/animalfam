@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
         data: {
           paymentRef: reference,
           paymentStatus: "PENDING",
-          totalAmount: amount / 100,
         },
       })
 

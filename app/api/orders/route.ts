@@ -97,7 +97,7 @@ try {
       data: {
         orderNumber,
         userId: user.id,
-        totalAmount: Math.round(totalAmount * 100),
+        totalAmount,
         deliveryFee: Math.round((deliveryFee || 0) * 100),
         deliveryAddress,
         deliveryCity,

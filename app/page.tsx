@@ -1844,7 +1844,7 @@ if (isLoading) {
                   throw new Error("Paystack public key is not configured. Please contact support.");
                 }
 
-                const totalAmountInKobo = Math.round(getTotalWithDelivery(deliveryOption) * 100);
+                const totalAmountInKobo = getTotalWithDelivery(deliveryOption);
                 if (totalAmountInKobo <= 0) {
                   throw new Error("Invalid payment amount. Total must be greater than zero.");
                 }
