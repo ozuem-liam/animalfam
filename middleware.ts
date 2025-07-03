@@ -9,7 +9,7 @@ export default withAuth(
     // Protect admin routes
     if (req.nextUrl.pathname.startsWith('/admin')) {
       const token = req.nextauth.token;
-      const isAdmin = token?.role === 'ADMIN' || token?.email === 'dikandumichael@gmail.com';
+      const isAdmin = token?.role === 'ADMIN' || token?.email === 'animalfam.help@gmail.com';
       if (!isAdmin) {
         return NextResponse.redirect(
           new URL('/auth/signin?callbackUrl=' + encodeURIComponent(req.nextUrl.pathname), req.url)
@@ -25,7 +25,7 @@ export default withAuth(
 
         // Protect admin routes
         if (req.nextUrl.pathname.startsWith('/admin')) {
-          return token?.role === 'ADMIN' || token?.email === 'dikandumichael@gmail.com';
+          return token?.role === 'ADMIN' || token?.email === 'animalfam.help@gmail.com';
         }
 
         // Protect user-specific routes

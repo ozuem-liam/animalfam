@@ -39,10 +39,10 @@ async function main() {
   // Create admin user
   const adminPassword = await bcrypt.hash('admin123', 12);
   await prisma.user.upsert({
-    where: { email: 'dikandumichael@gmail.com' },
+    where: { email: 'animalfam.help@gmail.com' },
     update: {},
     create: {
-      email: 'dikandumichael@gmail.com',
+      email: 'animalfam.help@gmail.com',
       password: adminPassword,
       firstName: 'Michael',
       lastName: 'Dikandu',
@@ -54,10 +54,10 @@ async function main() {
   // // Create demo customer user
   // const customerPassword = await bcrypt.hash('customer123', 12);
   // await prisma.user.upsert({
-  //   where: { email: 'customer@freshfarm.com' },
+  //   where: { email: 'customer@AnimalFam.com' },
   //   update: {},
   //   create: {
-  //     email: 'customer@freshfarm.com',
+  //     email: 'customer@AnimalFam.com',
   //     password: customerPassword,
   //     firstName: 'John',
   //     lastName: 'Doe',
@@ -222,8 +222,6 @@ async function main() {
   }
 
   console.log('Database seeded successfully!');
-  console.log('Admin user created: dikandumichael@gmail.com / admin123');
-  console.log('Demo customer: customer@freshfarm.com / customer123');
 }
 
 main()

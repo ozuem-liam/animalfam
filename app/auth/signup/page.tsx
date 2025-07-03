@@ -188,7 +188,7 @@ export default function SignUp() {
         <div className="mb-6">
           <Link href="/" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to FreshFarm
+            Back to AnimalFam
           </Link>
         </div>
 
@@ -198,7 +198,7 @@ export default function SignUp() {
               <span className="text-white font-bold text-2xl">F</span>
             </div>
             <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
-            <CardDescription>Join FreshFarm and start shopping for fresh products</CardDescription>
+            <CardDescription>Join AnimalFam and start shopping for fresh products</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">

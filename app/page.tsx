@@ -949,7 +949,7 @@ if (isLoading) {
     </div>
     <div className="flex items-center gap-2 hover:text-yellow-300 transition-colors">
       <Mail className="h-4 w-4" />
-      <span>hello@freshfarm.com</span>
+      <span>animalfam.help@gmail.com</span>
     </div>
   </div>
   <div className="flex items-center gap-4">
@@ -1977,10 +1977,10 @@ if (isLoading) {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">F</span>
+                    <span className="text-white font-bold text-lg">A</span>
                   </div>
                   <div>
-                    <span className="text-xl font-bold">FreshFarm</span>
+                    <span className="text-xl font-bold">AnimalFam</span>
                     <div className="text-xs text-gray-400">Farm to Table</div>
                   </div>
                 </div>
@@ -2045,7 +2045,7 @@ if (isLoading) {
             <Separator className="bg-gray-800 mb-8" />
 
             <div className="flex flex-col md:flex-row justify-between items-center text-gray-400">
-              <p>&copy; 2024 FreshFarm. All rights reserved.</p>
+              <p>&copy; 2024 AnimalFam. All rights reserved.</p>
               <div className="flex items-center gap-6 mt-4 md:mt-0">
                 <span>Follow us:</span>
                 <div className="flex gap-4">

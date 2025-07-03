@@ -7,7 +7,7 @@ import { AuthProvider } from "@/components/auth/auth-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "FreshFarm - Farm Fresh Delivered Daily",
+  title: "AnimalFam - Farm Fresh Delivered Daily",
   description: "Premium farm-fresh ingredients delivered to your table in 24 hours across Nigeria",
     generator: 'v0.dev'
 }
