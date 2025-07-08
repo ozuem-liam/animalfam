@@ -81,7 +81,12 @@ export default function AdminDashboard() {
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false)
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [paginatedProducts, setPaginatedProducts] = useState<Product[]>([])
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const itemsPerPage = 10
+
   const [loading, setLoading] = useState(true)
 
   const [productForm, setProductForm] = useState({
@@ -106,22 +111,35 @@ export default function AdminDashboard() {
   })
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    setPaginatedProducts(products.slice(startIndex, endIndex))
+  }, [currentPage, products])
+  
+  
 
+  
   const fetchData = async () => {
     try {
+      setLoading(true)
+  
       const [productsRes, categoriesRes, ordersRes] = await Promise.all([
         fetch("/api/products"),
         fetch("/api/categories"),
         fetch("/api/orders"),
       ])
-
+  
       const productsData = await productsRes.json()
       const categoriesData = await categoriesRes.json()
       const ordersData = await ordersRes.json()
-
-      setProducts(productsData.products || [])
+  
+      const allProducts = productsData.products || []
+      setProducts(allProducts)
+  
+      const pages = Math.ceil(allProducts.length / itemsPerPage)
+      setTotalPages(pages)
+      setPaginatedProducts(allProducts.slice(0, itemsPerPage)) // default first page
+  
       setCategories(categoriesData || [])
       setOrders(ordersData.orders || [])
     } catch (error) {
@@ -130,6 +148,9 @@ export default function AdminDashboard() {
       setLoading(false)
     }
   }
+  
+  
+  
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-NG", {
@@ -626,8 +647,8 @@ export default function AdminDashboard() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {products.map((product) => (
-                        <TableRow key={product.id}>
+                    {paginatedProducts.map((product) => (
+                      <TableRow key={product.id}>
                           <TableCell>
                             <Image
                               src={product.images?.[0] || "/placeholder.svg"}
@@ -685,6 +706,27 @@ export default function AdminDashboard() {
                       ))}
                     </TableBody>
                   </Table>
+                  <div className="flex justify-end items-center gap-4 mt-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </Button>
+                    <span className="text-sm">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
