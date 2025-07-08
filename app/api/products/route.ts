@@ -10,8 +10,6 @@ export async function GET(request: NextRequest) {
     const inStock = searchParams.get("inStock")
     const organic = searchParams.get("organic")
     const sortBy = searchParams.get("sortBy") || "featured"
-    const page = Number.parseInt(searchParams.get("page") || "1")
-    const limit = Number.parseInt(searchParams.get("limit") || "12")
 
     const where: any = {}
 
@@ -59,30 +57,17 @@ export async function GET(request: NextRequest) {
 
     const products = await prisma.product.findMany({
       where,
-      include: {
-        category: true,
-      },
+      include: { category: true },
       orderBy,
-      skip: (page - 1) * limit,
-      take: limit,
     })
 
-    const total = await prisma.product.count({ where })
-
-    return NextResponse.json({
-      products,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
-    })
+    return NextResponse.json({ products })
   } catch (error) {
     console.error("Error fetching products:", error)
     return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 })
   }
 }
+
 
 export async function POST(request: NextRequest) {
   try {

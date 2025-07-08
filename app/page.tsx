@@ -913,21 +913,17 @@ const FilterSidebar = () => {
 
 if (isLoading) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="flex items-center space-x-4 animate-pulse">
-        {/* Custom Logo Box */}
-        <div className="w-20 h-14 sm:w-32 sm:h-38 bg-transparent p-0 rounded-xl overflow-hidden isolate flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-          <img
-            src="/images/ecommerce_logo.png"
-            alt="Protiin logo"
-            className="w-full h-full object-cover"
-          />
-        </div>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-white">
+      <div className="w-48 h-48 sm:w-64 sm:h-64">
+        <img
+          src="/images/ecommerce_logo.png"
+          alt="Protiin logo"
+          className="w-full h-full object-contain"
+        />
       </div>
     </div>
   );
 }
-
 
 
   if (allProducts.length === 0) {
